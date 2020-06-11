@@ -1,0 +1,7 @@
+{
+    "settings": {
+        "prefix": "!",
+        "welcomechannel": "welcome",
+        "logschannel": "logs"
+    }
+}

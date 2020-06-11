@@ -1,0 +1,14 @@
+{
+    "infoMsg1": [
+      "Hello! I see you want to add the bot to your server. Follow the steps to to so",
+      "*****************************************************",
+      "First, you must remember one thing, If you Kick/Remove Cryptonix X from your server, all previous settings, data, xp, etc... of all server members will be deleted"
+    ],
+    "infoMsg2": [
+      "Then, you need to invite the bot! Here's an invite link. https://discord.com/api/oauth2/authorize?client_id=628361998970650643&permissions=8&scope=bot",
+      "Once invited, use `!settings` to set up the bot. After, use `!help` to see all the available commands."
+    ],
+    "infoMsg3": [
+      "Use !suggest <suggestion> if you have any suggestions or !bug <bug> if you found a bug. Thank you."
+    ]
+  }
