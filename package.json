@@ -1,10 +1,13 @@
 {
   "name": "bruh-bot",
-  "version": "2.1.1-0",
+  "version": "1.1.0",
   "main": "index.js",
   "scripts": {
     "start": "node .",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "gitPatch": "npm version patch && git push bot master",
+    "gitMinor": "npm version minor && git push bot master",
+    "gitMajor": "npm version major && git push bot master"
   },
   "keywords": [],
   "author": "STealth",
