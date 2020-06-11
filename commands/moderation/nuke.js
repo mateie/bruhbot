@@ -1,5 +1,3 @@
-const { random } = require("lodash");
-
 exports.run = async (client, message, args) => {
     if(!args[0]) {
         const channel = message.guild.channels.cache.find(ch => ch.name === message.channel.name);
