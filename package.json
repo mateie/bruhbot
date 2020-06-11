@@ -5,9 +5,9 @@
   "scripts": {
     "start": "node .",
     "lint": "eslint .",
-    "gitPatch": "npm version patch && git push bot master",
-    "gitMinor": "npm version minor && git push bot master",
-    "gitMajor": "npm version major && git push bot master"
+    "patch": "npm version patch && git push bot master",
+    "minor": "npm version minor && git push bot master",
+    "major": "npm version major && git push bot master"
   },
   "keywords": [],
   "author": "STealth",
