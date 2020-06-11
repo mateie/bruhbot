@@ -1,6 +1,6 @@
 exports.run = (client, message, args) => {
-    let category = args[0];
-    let command = args[1];
+    let category = args[0].toLowerCase();
+    let command = args[1].toLowerCase();
 
     if(!category) {
         return message.channel.send(this.error.no_category);

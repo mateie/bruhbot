@@ -9,7 +9,7 @@ module.exports = async member => {
     }, async (err, settings) => {
         if (err) console.error(err);
 
-        const channel = member.guild.channels.cache.find(ch => ch.name === settings.welcomechannel);
+        const channel = member.guild.channels.cache.get(ch => ch.name === settings.welcomechannel);
         if (!channel) {
             console.error('Welcome channel was not found on the server');
             return;
