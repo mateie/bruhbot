@@ -76,7 +76,7 @@ exports.run = async (client, message, args) => {
                     await channel.delete();
                     await message.guild.channels.create(channel.name, options);
 
-                    return message.channel.send(`**${message.author.username}** nuked ${channel.name} channel :flushed:`, { files: [randomNukeGIF[Math.floor(Math.random() * randomNukeGIF.length)]] });
+                    return message.channel.send(`**${message.author.username}** nuked ${channel.name} category :flushed:`, { files: [randomNukeGIF[Math.floor(Math.random() * randomNukeGIF.length)]] });
                 } else {
                     return message.channel.send(`Nuking of ${channel.name} has been cancelled`);
                 }

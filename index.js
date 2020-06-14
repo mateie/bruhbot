@@ -18,7 +18,7 @@ client.deleteTime = 10;
 
 client.commands = new Discord.Collection();
 client.aliases = new Discord.Collection();
-client.categories = ['economy', 'fun', 'info', 'moderation', 'music', 'nsfw', 'owner'];
+client.categories = ['economy', 'fun', 'info', 'games', 'moderation', 'music', 'nsfw', 'owner'];
 
 fs.readdir('./commands/', (err, directory) => {
     if (err) console.error(err);
