@@ -130,7 +130,7 @@ exports.randomHex = () => {
 exports.conf = {
     enabled: true,
     guildOnly: false,
-    aliases: ['agm'],
+    aliases: ['addg'],
     permLevel: 4,
 };
 
