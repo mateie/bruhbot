@@ -4,7 +4,7 @@ exports.run = (client, message, args) => {
     const game = args[0].toLowerCase();
 
     if (!game) {
-        return message.reply('Please enter a game name');
+        return message.reply('Please provide a game name');
     }
 
     if (message.guild.roles.cache.find(ch => ch.name === game.toUpperCase())) {
@@ -29,7 +29,7 @@ exports.run = (client, message, args) => {
         .then(async res => {
             let resGame = res.data[0];
             if(!resGame) {
-                return message.reply(`${game} doesn't exist, please enter a valid game`);
+                return message.reply(`${game} doesn't exist, please provide a valid game`);
             }
 
             let originalGameName = res.data[0].name.toLowerCase();

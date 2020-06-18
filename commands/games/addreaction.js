@@ -2,6 +2,10 @@ exports.run = async (client, message, args) => {
 
     const game = args[0];
 
+    if(!game) {
+        return message.reply('Please provide a game name');
+    }
+
 };
 
 exports.conf = {
