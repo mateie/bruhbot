@@ -1,3 +1,4 @@
+const Discord = require('discord.js');
 const YTDL = require('ytdl-core');
 const Search = require('youtube-search');
 
@@ -5,9 +6,9 @@ exports.run = async (client, message, args) => {
     let queue = client.queue;
     let serverQueue = queue.get(message.guild.id);
 
-    let voiceChannel = message.member.voiceChannel;
+    let voiceChannel = message.member.voice.channel;
     if(!voiceChannel) {
-        return message.channel.send(this.error.voice_channel);
+        return message.channel.send('You have to be in a voice channel to play music');
     }
 
     let validate = YTDL.validateURL(args[0]);
@@ -18,39 +19,38 @@ exports.run = async (client, message, args) => {
         };
 
         let searchResults = await Search(args.join(' '), searchOptions);
-        if(!searchResults.results.length > 0) {
+        if(searchResults.results.length > 0) {
             args[0] = searchResults.results.find(val => val.kind == 'youtube#video').link;
             if(!YTDL.validateURL(args[0])) {
-                return message.channel.send(this.error.not_found);
+                return message.channel.send('Video not found');
             }
         } else {
-            return message.channel.send(this.error.not_found);
+            return message.channel.send('Video not found');
         }
     }
 
     let songInfo = await YTDL.getInfo(args[0]);
-
     let song = {
-        title: songInfo.title,
-        url: songInfo.video_url,
-        duration: songInfo.length_seconds,
+        title: songInfo.videoDetails.video_url,
+        url: songInfo.videoDetails.video_url,
+        duration: songInfo.videoDetails.length_seconds,
     };
 
     if(!serverQueue) {
-        let serverQueueConstruct = {
+        let serverQueueConstructor = {
             text_channel: message.channel,
-            voicechannel: voiceChannel,
+            voice_channel: voiceChannel,
             connection: null,
             songs: [],
             volume: 100,
             last_volume: 100,
             loop: false,
-            playing: false,
+            playing: true,
         };
 
-        queue.set(message.guild.id, serverQueueConstruct);
+        queue.set(message.guild.id, serverQueueConstructor);
 
-        serverQueueConstruct.songs.push(song);
+        serverQueueConstructor.songs.push(song);
 
         try {
             let connection = await voiceChannel.join();
@@ -58,14 +58,14 @@ exports.run = async (client, message, args) => {
                 if(err) console.error(err);
 
                 if(serverQueue.connection.dispatcher) {
-                    serverQueue.queue.songs = [];
+                    serverQueue.songs = [];
                     serverQueue.connection.dispatcher.end();
-                    message.channel.send(this.error.stopped);
+                    message.channel.send('Disconnected. Music Stopped');
                 }
             });
 
-            serverQueueConstruct.connection = connection;
-            this.play(client, message, serverQueueConstruct.songs[0]);
+            serverQueueConstructor.connection = connection;
+            this.play(client, message, serverQueueConstructor.songs[0]);
         } catch(err) {
             console.error(err);
             queue.delete(message.guild.id);
@@ -73,7 +73,7 @@ exports.run = async (client, message, args) => {
         }
     } else {
         if(serverQueue.songs.length >= 20) {
-            return message.channel.send(this.error.queue_max);
+            return message.channel.send('Max queue length is 20');
         }
 
         serverQueue.songs.push(song);
@@ -83,11 +83,11 @@ exports.run = async (client, message, args) => {
 
 exports.play = (client, message, song) => {
     let queue = client.queue;
-    let serverQueue = serverQueue.get(message.guild.id);
+    let serverQueue = queue.get(message.guild.id);
 
     if(!song) {
         serverQueue.voiceChannel.leave();
-        return queue.delete(message);
+        return queue.delete(message.guild.id);
     }
 
     let dispatcher = serverQueue.connection
@@ -96,20 +96,12 @@ exports.play = (client, message, song) => {
         if(!serverQueue.loop) {
             serverQueue.songs.shift();
         }
-
         this.play(client, message, serverQueue.songs[0]);
     })
     .on('error', err => console.error(err));
 
     dispatcher.setVolumeLogarithmic(serverQueue.volume / 100);
-    serverQueue.text_channel.send(`Now playing: **${song.title}**`);
-};
-
-exports.error = {
-    'voice_channel': 'You must be in a voice channel to play music',
-    'not_found': 'Video was not found',
-    'stopped': 'Disconnected from the voice channel. Music stopped',
-    'queue_max': 'Queue can be up to 20 tracks long',
+    serverQueue.text_channel.send(`Now Playing: **${song.title}**`);
 };
 
 exports.conf = {
